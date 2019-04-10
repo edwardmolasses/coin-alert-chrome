@@ -1,0 +1,302 @@
+a:focus {
+  outline: 0;
+}
+
+.no-outline {
+  outline: 0;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.block-ellipsis-16 {
+  display: block;
+  display: -webkit-box;
+  max-width: 100%;
+  height: 64px;
+  margin: 0 auto;
+  font-size: 16px;
+  line-height: 1;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.flex-direction-row {
+  flex-direction: row;
+}
+
+.flex-align-items-center {
+  align-items: center;
+}
+
+.flex-align-items-flex-start {
+  align-items: flex-start;
+}
+
+.flex-justify-content-space-around {
+  justify-content: space-around;
+}
+
+.flex-justify-content-space-evenly {
+  justify-content: space-evenly;
+}
+
+.flex-justify-content-start {
+  justify-content: flex-start;
+}
+
+.flex-wrap-wrap {
+  flex-wrap: wrap;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.background-contain {
+  background: contain;
+}
+
+.background-center {
+  background-position: center !important;
+}
+
+.background-cover {
+  background-size: cover !important;
+}
+
+.background-norepeat {
+  background-repeat: no-repeat !important;
+}
+
+.min-h190 {
+  height: 190px;
+}
+
+.h165 {
+  height: 165px;
+}
+
+.h185 {
+  height: 185px;
+}
+
+.mt10 {
+  margin-top: 10px;
+}
+
+.ml10 {
+  margin-left: 10px;
+}
+
+.mr15 {
+  margin-right: 15px;
+}
+
+.mb15 {
+  margin-bottom: 15px;
+}
+
+.mb25 {
+  margin-bottom: 25px;
+}
+
+.ml30 {
+  margin-left: 30px;
+}
+
+.w40 {
+  width: 40px;
+}
+
+.w50 {
+  width: 50px;
+}
+
+.w10p {
+  width: 10%;
+}
+
+.w20p {
+  width: 20%;
+}
+
+.w30p {
+  width: 30%;
+}
+
+.w50p {
+  width: 50%;
+}
+
+.w60p {
+  width: 60%;
+}
+
+.w70p {
+  width: 70%;
+}
+
+.w90p {
+  width: 90%;
+}
+
+.cp {
+  cursor: pointer;
+}
+
+.tar {
+  text-align: right;
+}
+
+.tal {
+  text-align: left;
+}
+
+.capitalize-first {
+  text-transform: capitalize;
+}
+
+.capitalize-all {
+  text-transform: capitalize;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.modal-container {
+  font-family: Helvetica Neue, Helvetica, Arial;
+  height: 50vh;
+  width: 50vw;
+}
+
+.modal-text {
+  height: 50vh;
+  width: 50vw;
+  overflow-y: auto;
+}
+
+.modal-button {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  height: 40px;
+  width: 40px;
+  padding: 0;
+  outline: none;
+  border-radius: 50%;
+  padding: 6px 9px;
+  background-color: black;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  border: 2px solid white;
+}
+
+.modal-list-item-title {
+  padding: 5px 10px;
+}
+
+.modal-list-item-title a {
+  font-size: 20px;
+  font-weight: 600;
+  color: #466A91;
+}
+
+.modal-list-item-price,
+.modal-list-item-currency {
+  padding-top: 5px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #7F8487;
+}
+
+  .modal-list-item-title a:hover {
+    text-decoration: none;
+    color: #0092A5;
+  }
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.result-row-affiliates-btn {
+  position:absolute;
+  top: 0;
+  right: 0;
+  color: white;
+  z-index:1000;
+  cursor: pointer;
+  background-color: blue;
+  padding: 3px;
+}
+
+.result-row-affiliates-info {
+  color: white;
+}
+
+.result-row-info-price {
+  font-size: 13px;
+  padding: 1px 5px 2px 5px;
+}
+
+.result-row-info-price-ebay,
+.result-row-info-price-etsy {
+  color: white;
+  font-family: Helvetica Neue, Helvetica, Arial;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 5px 5px 5px 0;
+}
+
+.result-row-info-price-ebay {
+  background-color: #0f66ce;
+}
+.result-row-info-price-etsy {
+  background-color: #f1591e;
+}
+
+.result-row-info-price-ebay .result-row-info-price-affiliate {
+  color: #0f66ce;
+}
+
+.result-row-info-price-etsy .result-row-info-price-affiliate {
+  color: #f1591e;
+}
+
+.result-row-info-price-affiliate {
+  background-color: #fff;
+  border-radius: 3px;
+  font-size: 10px;
+  padding: 2px 3px;
+  margin-right: 5px;
+}
+
+.result-row-info-price-currency {
+  font-size: 11px;
+}
+
+
+.result-row {
+  max-height: none !important;
+  height: auto !important;
+}
+
+.debug {
+  background-color: red;
+}
