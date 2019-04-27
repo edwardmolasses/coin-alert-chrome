@@ -16,15 +16,20 @@ let alertSaveMessagePrice = document.getElementById('popup-alert-price');
 let alertPriceMessageDirectionText = document.getElementById('popup-alert-price-direction');
 let alertPriceMessageDirectionAboveText = document.getElementById('popup-alert-price-direction-above');
 let alertPriceMessageDirectionBelowText = document.getElementById('popup-alert-price-direction-below');
+let buyBtnCoinText = document.getElementById('buy-btn-label-coin');
 
 // variables
-let currentPriceFull = false;
-let alertPriceFull = false;
-let currentPriceIntervalId = false;
-const getCoinPriceUrl = 'https://chrome-coin-alert.glitch.me/oneFromName?name=IOTA';
+const buyIotaDefaultUrl = 'https://www.binance.com/?ref=17037537';
+const buyIotaEuroUrl = 'https://www.binance.je/?ref=35052042';
+const buyIotaEuroBtnText = 'CRYPTO';
 const currentPriceDecimalPlaces = 5;
 const badgePriceDecimalPlaces = 2;
 const intervalCheckInSeconds = 4;
+let buyIotaUrl = buyIotaDefaultUrl;
+let currentPriceFull = false;
+let alertPriceFull = false;
+let currentPriceIntervalId = false;
+
 const messageStrings = {
   mustBeNonZero: 'Alert must be a non-zero number'
 };
@@ -50,6 +55,7 @@ const resetAlert = function() {
     hideElement(alertOffBtn);
     showElement(alertNoAlertSet);
     showElement(alertStatusMessageText);
+    chrome.runtime.sendMessage({ alertOff: true });
 };
 const setAlert = function(alertPrice, directionToPrice) {
   chrome.storage.sync.set({
@@ -57,20 +63,21 @@ const setAlert = function(alertPrice, directionToPrice) {
     directionToPrice: directionToPrice,
     alertTriggered: false
   });
+  // send new alert price to background script
+  chrome.runtime.sendMessage({
+    alertPrice: alertPrice,
+    directionToPrice: directionToPrice
+  });
   showElement(alertPriceMessage);
   hideElement(alertOffBtn);
-  console.log('setAlert');
 };
 const setAlertPrice = function(price) {
   alertSaveMessagePrice.innerHTML = price;
   alertStatusMessageText.innerHTML = "";
   hideElement(alertStatusMessageText);
   hideElement(alertNoAlertSet);
-  console.log('setAlertPrice');
 };
 const setCurrentCoinPrice = function(currentPrice) {
-  //const currentPriceTrunc = parseFloat(currentPrice.toFixed(currentPriceDecimalPlaces)).toString();
-
   // show long form current price
   if (!!currentPrice) {
     alertCurrentPrice.innerHTML = `${currentPrice}`;
@@ -81,13 +88,23 @@ const setCurrentCoinPrice = function(currentPrice) {
 
   // fill input with current price if there is no alert price set
   chrome.storage.sync.get(['coinAlertAlertPrice'], function(data) {
-    if (!!!data.coinAlertAlertPrice) {
+    if (!!!data.coinAlertAlertPrice && !!!alertFormPriceInput.value) {
       setAlertFormPriceInput(currentPrice);
     }
   });
   currentPriceFull = currentPrice;
 
   return currentPrice;
+};
+const buildCoinServerUrl = function(postfix) {
+  const hostDomain = 'chrome-coin-alert';
+  const hostSubdomain = 'glitch.me';
+  const minServerNum = 1;
+  const maxServerNum = 5;
+  //let randomServerNum = Math.floor(Math.random() * (+(maxServerNum + 1) - +minServerNum)) + +minServerNum;
+  const randomServerNum = 4;
+
+  return `https://${hostDomain}-${randomServerNum}.${hostSubdomain}/${postfix}`;
 };
 
 // initialize elements
@@ -96,6 +113,21 @@ hideElement(alertStatusMessageText);
 hideElement(alertNoAlertSet);
 alertFormPriceInput.focus();
 alertFormPriceInput.select();
+
+// set buy coin referral url with user country
+fetch('http://gd.geobytes.com/GetCityDetails')
+  .then(response => response.json())
+  .then(jsonIp => {
+    fetch(`http://api.ipstack.com/${jsonIp.geobytesipaddress}?access_key=92337a96b7b8589d890d5a36870ff317`)
+      .then(response => response.json())
+      .then(json => {
+        let isClientEU = json.continent_code === 'EU';
+        if (isClientEU) {
+          buyIotaUrl = buyIotaEuroUrl;
+          buyBtnCoinText.innerHTML = buyIotaEuroBtnText;
+        }
+      });
+  });
 
 // initialize popup with current alert settings
 chrome.storage.sync.get(['coinAlertCurrentPrice', 'coinAlertAlertPrice', 'directionToPrice', 'alertTriggered'], function(data) {
@@ -112,7 +144,11 @@ chrome.storage.sync.get(['coinAlertCurrentPrice', 'coinAlertAlertPrice', 'direct
   }
 
   // initialize popup with current coin price
-  setCurrentCoinPrice(data.coinAlertCurrentPrice);
+  fetch(buildCoinServerUrl('oneFromName?name=IOTA'))
+    .then(response => response.json())
+    .then(json => {
+      setCurrentCoinPrice(parseFloat(json.price));
+    });
 });
 
 // click current price event
@@ -138,7 +174,7 @@ alertChartBtn.addEventListener('click', function() {
 
 // link from exchange buy button
 alertBuyBtn.addEventListener('click', function() {
-  chrome.tabs.create({ url: 'https://www.binance.com/?ref=17037537' });
+  chrome.tabs.create({ url: buyIotaUrl });
 });
 
 // stop alert, button click event
@@ -151,14 +187,19 @@ alertOffBtn.addEventListener('click', function() {
   resetAlert();
 });
 
-currentPriceIntervalId = window.setInterval(function() {
-  chrome.storage.sync.get(['coinAlertCurrentPrice', 'coinAlertAlertPrice', 'directionToPrice', 'alertTriggered'], function(data) {
-    setCurrentCoinPrice(data.coinAlertCurrentPrice);
-    if (data.alertTriggered) {
-      showElement(alertOffBtn);
-    }
-  });
-}, intervalCheckInSeconds * 1000);
+// set current price in popup on price change in background script
+chrome.runtime.onMessage.addListener(function(response, sender, sendResponse) {
+  if (!!response.currentBackgroundPrice) {
+    setCurrentCoinPrice(response.currentBackgroundPrice);
+  }
+});
+
+// show the alert panel in the popup if the alert has been triggered in background script
+chrome.runtime.onMessage.addListener(function(response, sender, sendResponse) {
+  if (!!response.alertTriggered && response.alertTriggered) {
+    showElement(alertOffBtn);
+  }
+});
 
 // set alert button event
 alertAddBtn.addEventListener('click', function() {

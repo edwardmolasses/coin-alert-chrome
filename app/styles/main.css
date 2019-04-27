@@ -186,12 +186,14 @@
 /* App-Specific */
 
 html {
-  border-left: 2px solid white;
-  border-right: 2px solid white;
+  border: 2px solid white;
+  background-color: white;
 }
 
 body {
   background-color: white;
+  padding: 8px;
+  margin: 0 0 4px 0;
 }
 
 button {
@@ -235,7 +237,6 @@ button {
   font-size: 14px;
   background: radial-gradient(ellipse at center, rgba(19,86,150,1) 0%, rgba(19,86,150,1) 0%, rgba(19,86,150,1) 18%, rgba(15,68,128,1) 70%, rgba(15,68,128,1) 100%);
   color: white;
-  border-radius: 5px;
 }
 
 .popup-alert-form-add-input-price,

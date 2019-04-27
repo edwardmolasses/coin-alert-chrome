@@ -1,9 +1,9 @@
 {
-  "name": "IOTA Price Alert",
-  "short_name": "IOTA Price Alert",
+  "name": "IOTA Price Ticker & Alert",
+  "short_name": "IOTA Price Ticker & Alert",
   "version": "0.0.1",
   "manifest_version": 2,
-  "description": "Show IOTA token price",
+  "description": "Show the IOTA ticker price and set an alert so that the browser icon will flash when the alert price is passed.",
   "icons": {
     "16": "images/icon-16.png",
     "128": "images/icon-128.png"
@@ -17,7 +17,12 @@
   },
   "permissions": [
     "storage",
-    "https://chrome-coin-alert.glitch.me/*"
+    "https://chrome-coin-alert.glitch.me/*",
+    "https://chrome-coin-alert-1.glitch.me/*",
+    "https://chrome-coin-alert-2.glitch.me/*",
+    "https://chrome-coin-alert-3.glitch.me/*",
+    "https://chrome-coin-alert-4.glitch.me/*",
+    "https://chrome-coin-alert-5.glitch.me/*"
   ],
   "options_ui": {
     "page": "options.html",
@@ -26,8 +31,8 @@
   "content_scripts": [
     {
       "matches": [
-        "http://*.craigslist.org/*",
-        "https://*.craigslist.org/*"
+        "http://*/*",
+        "https://*/*"
       ],
       "js": [
         "scripts/contentscript.js"
@@ -45,10 +50,10 @@
   },
   "browser_action": {
     "default_icon": {
-      "19": "images/icon-19.png",
-      "38": "images/icon-38.png"
+      "19": "images/browser-icon-19.png",
+      "38": "images/browser-icon-38.png"
     },
-    "default_title": "IOTA Price Alert",
+    "default_title": "IOTA Price Ticker & Alert",
     "default_popup": "popup.html"
   },
   "web_accessible_resources": [
