@@ -19,6 +19,7 @@ let alertPriceMessageDirectionBelowText = document.getElementById('popup-alert-p
 let buyBtnCoinText = document.getElementById('buy-btn-label-coin');
 
 // variables
+const coinGeckoPriceAPI = 'https://api.coingecko.com/api/v3/coins/iota/tickers?exchange_ids=binance&page=1';
 const buyIotaDefaultUrl = 'https://www.binance.com/?ref=17037537';
 const buyIotaEuroUrl = 'https://www.binance.je/?ref=35052042';
 const buyIotaEuroBtnText = 'CRYPTO';
@@ -63,10 +64,11 @@ const setAlert = function(alertPrice, directionToPrice) {
     directionToPrice: directionToPrice,
     alertTriggered: false
   });
-  // send new alert price to background script
+  // send new alert price to background script & switch alert off
   chrome.runtime.sendMessage({
     alertPrice: alertPrice,
-    directionToPrice: directionToPrice
+    directionToPrice: directionToPrice,
+    alertOff: true
   });
   showElement(alertPriceMessage);
   hideElement(alertOffBtn);
@@ -106,6 +108,28 @@ const buildCoinServerUrl = function(postfix) {
 
   return `https://${hostDomain}-${randomServerNum}.${hostSubdomain}/${postfix}`;
 };
+const isIpAddress = function (str) {
+  const splitStrArr = str.split('.');
+  const digitFirst = parseInt(splitStrArr[0]);
+  const digitSecond = parseInt(splitStrArr[1]);
+  const digitThird = parseInt(splitStrArr[2]);
+  const digitFourth = parseInt(splitStrArr[3]);
+
+  if (!isNaN(digitFirst) &&
+      !isNaN(digitSecond) &&
+      !isNaN(digitThird) &&
+      !isNaN(digitFourth)) {
+    console.log('is a number');
+    if ((digitFirst >= 0 && digitFirst <= 256) &&
+        (digitSecond >= 0 && digitSecond <= 256) &&
+        (digitThird >= 0 && digitThird <= 256) &&
+        (digitFourth >= 0 && digitFourth <= 256)) {
+      return true;
+    }
+  }
+
+  return false;
+};
 
 // initialize elements
 hideElement(alertOffBtn);
@@ -115,18 +139,25 @@ alertFormPriceInput.focus();
 alertFormPriceInput.select();
 
 // set buy coin referral url with user country
-fetch('http://gd.geobytes.com/GetCityDetails')
-  .then(response => response.json())
+fetch('http://jsonip.com', {
+    headers : {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  })
+  .then(response => response.clone().json())
   .then(jsonIp => {
-    fetch(`http://api.ipstack.com/${jsonIp.geobytesipaddress}?access_key=92337a96b7b8589d890d5a36870ff317`)
-      .then(response => response.json())
-      .then(json => {
-        let isClientEU = json.continent_code === 'EU';
-        if (isClientEU) {
-          buyIotaUrl = buyIotaEuroUrl;
-          buyBtnCoinText.innerHTML = buyIotaEuroBtnText;
-        }
-      });
+    if (isIpAddress(jsonIp.ip)) {
+      fetch(`http://api.ipstack.com/${jsonIp.ip}?access_key=92337a96b7b8589d890d5a36870ff317`)
+        .then(response => response.json())
+        .then(json => {
+          let isClientEU = json.continent_code === 'EU';
+          if (isClientEU) {
+            buyIotaUrl = buyIotaEuroUrl;
+            buyBtnCoinText.innerHTML = buyIotaEuroBtnText;
+          }
+        });
+    }
   });
 
 // initialize popup with current alert settings
@@ -144,11 +175,14 @@ chrome.storage.sync.get(['coinAlertCurrentPrice', 'coinAlertAlertPrice', 'direct
   }
 
   // initialize popup with current coin price
-  fetch(buildCoinServerUrl('oneFromName?name=IOTA'))
+  fetch(coinGeckoPriceAPI, {
+      headers : {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
     .then(response => response.json())
-    .then(json => {
-      setCurrentCoinPrice(parseFloat(json.price));
-    });
+    .then(json => setCurrentCoinPrice(parseFloat(json.tickers[1].converted_last.usd)));
 });
 
 // click current price event
