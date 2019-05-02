@@ -16,6 +16,7 @@
     ]
   },
   "permissions": [
+    "activeTab",
     "storage",
     "https://chrome-coin-alert-4.glitch.me/*"
   ],
@@ -29,9 +30,7 @@
         "http://*/*",
         "https://*/*"
       ],
-      "js": [
-        "scripts/contentscript.js"
-      ],
+      "js": [],
       "css": [
         "styles/content.css",
         "styles/jquery.modal.min.css"
