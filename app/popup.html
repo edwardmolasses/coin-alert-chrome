@@ -7,44 +7,47 @@
   <link href="https://fonts.googleapis.com/css?family=Exo" rel="stylesheet">
 </head>
 <body class="popup-body">
-  <div id="popup-alert">
-    <div id="popup-alert-current-price-container"
-         class="popup-alert-current-price-container display-flex flex-direction-row flex-justify-content-start pl2 pr3 uc">
-      <div class="box-label popup-alert-current-price-label mr6">latest</div>
-      <div id="popup-alert-current-price" class="popup-alert-current-price cp">
-        <img class="loader" src="images/loader.gif"/>
-      </div>
+<div id="popup-alert">
+  <div id="popup-alert-current-price-container"
+       class="popup-alert-current-price-container display-flex flex-direction-row flex-justify-content-start pl2 pr3 uc">
+    <div class="popup-alert-icon-container h16 w16 wauto mr6">
+      <img class="popup-alert-icon" src="images/browser-icon-38.png" />
+    </div>
+    <div class="box-label popup-alert-current-price-label mr6">latest</div>
+    <div id="popup-alert-current-price" class="popup-alert-current-price cp">
+      <img class="loader" src="images/loader.gif"/>
+    </div>
+    <div class="currency-code ml3">USD</div>
+  </div>
+  <div id="popup-alert-form" class="show display-flex flex-direction-row flex-justify-content-space-between mt8">
+    <div class="popup-alert-form-add-input-price-container posr">
+      <input type="text"
+             id="popup-alert-form-add-input-price"
+             class="popup-alert-form-add-input-price no-outline"
+             name="popup-alert-form-add-input-price"
+             maxlength="16">
+      <div class="posa popup-alert-form-add-input-price-currency">USD</div>
+    </div>
+    <button id="popup-alert-form-add-btn" class="popup-alert-form-add-btn uc no-outline">set alert</button>
+  </div>
+  <div id="popup-alert-price-message"
+       class="popup-alert-price-message display-flex flex-direction-row flex-justify-content-start mt8 pl2 pr3 uc">
+    <div class="box-label popup-alert-price-alert-label mr6">alert</div>
+    <div id="popup-alert-price-direction-above">above</div>
+    <div id="popup-alert-price-direction-below">below</div>
+    <div class="display-flex flex-direction-row flex-justify-content-start ml3">
+      <div id="popup-alert-price" class="popup-alert-price cp"></div>
       <div class="currency-code ml3">USD</div>
     </div>
-    <div id="popup-alert-form" class="show display-flex flex-direction-row flex-justify-content-space-between mt8">
-      <div class="popup-alert-form-add-input-price-container posr">
-        <input type="text"
-               id="popup-alert-form-add-input-price"
-               class="popup-alert-form-add-input-price no-outline"
-               name="popup-alert-form-add-input-price"
-               maxlength="16">
-        <div class="posa popup-alert-form-add-input-price-currency">USD</div>
-      </div>
-      <button id="popup-alert-form-add-btn" class="popup-alert-form-add-btn uc no-outline">set alert</button>
-    </div>
-    <div id="popup-alert-price-message"
-         class="popup-alert-price-message display-flex flex-direction-row flex-justify-content-start mt8 pl2 pr3 uc">
-      <div class="box-label popup-alert-price-alert-label mr6">alert</div>
-      <div id="popup-alert-price-direction-above">above</div>
-      <div id="popup-alert-price-direction-below">below</div>
-      <div class="display-flex flex-direction-row flex-justify-content-start ml3">
-        <div id="popup-alert-price" class="popup-alert-price cp"></div>
-        <div class="currency-code ml3">USD</div>
-      </div>
-    </div>
-    <div id="popup-alert-status-message" class="popup-alert-status-message mt5 pl3 pr3 uc"></div>
-    <div id="popup-alert-no-alert-msg" class="popup-alert-no-alert-msg box-label mt8 pr3 uc">No Alert Set</div>
-    <button id="popup-alert-off-btn" class="popup-alert-off-btn mt8 uc no-outline">stop alert</button>
+  </div>
+  <div id="popup-alert-status-message" class="popup-alert-status-message mt5 pl3 pr3 uc"></div>
+  <div id="popup-alert-no-alert-msg" class="popup-alert-no-alert-msg box-label mt8 pr3 uc">No Alert Set</div>
+  <button id="popup-alert-off-btn" class="popup-alert-off-btn mt8 uc no-outline">stop alert</button>
 
-    <!-- buy coin button -->
-    <div class="display-flex flex-direction-row flex-justify-content-space-between mt8">
-      <div id="popup-alert-buy-btn" class="buy-btn">
-        <div class="buy-btn-slide-frame">
+  <!-- buy coin button -->
+  <div class="display-flex flex-direction-row flex-justify-content-space-between mt8">
+    <div id="popup-alert-buy-btn" class="buy-btn">
+      <div class="buy-btn-slide-frame">
         <div class="buy-btn-label no-outline display-flex flex-direction-row flex-justify-content-center">
           <span>Buy</span>
           <span id="buy-btn-label-coin" class="buy-btn-label-coin ml5">IOTA</span>
@@ -53,17 +56,17 @@
           <div class="buy-btn-line buy-btn-line-one"></div>
           <div class="buy-btn-line buy-btn-line-two"></div>
         </span>
-        </div>
-        <div class="buy-btn-exchange noselect">
-          @Binance
-        </div>
       </div>
-      <button id="popup-alert-chart-btn" class="popup-alert-chart-btn no-outline ml5" onclick="window.open('https://coinmarketcap.com/currencies/iota/')">
-        Chart
-      </button>
+      <div class="buy-btn-exchange noselect">
+        @Binance
+      </div>
     </div>
-
+    <button id="popup-alert-chart-btn" class="popup-alert-chart-btn no-outline ml5" onclick="window.open('https://coinmarketcap.com/currencies/iota/')">
+      Chart
+    </button>
   </div>
-  <script src="popup.js"></script>
+
+</div>
+<script src="popup.js"></script>
 </body>
 </html>

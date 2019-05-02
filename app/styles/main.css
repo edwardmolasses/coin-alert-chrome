@@ -84,6 +84,18 @@
   position: relative;
 }
 
+.h16 {
+  height: 16px;
+}
+
+.wauto {
+  width: auto;
+}
+
+.w16 {
+  width: 16px;
+}
+
 .mt5 {
   margin-top: 5px;
 }
@@ -120,6 +132,10 @@
   margin-left: 10px;
 }
 
+.pr3 {
+  padding-right: 3px;
+}
+
 .pl2 {
   padding-left: 2px;
 }
@@ -130,10 +146,6 @@
 
 .pl11 {
   padding-left: 11px;
-}
-
-.pr3 {
-  padding-right: 3px;
 }
 
 .pr11 {
@@ -167,12 +179,12 @@
 
 @font-face {
   font-family: 'Abel';
-  url('../fonts/Abel-Regular.ttf')  format('truetype'), /* Safari, Android, iOS */
+url('../fonts/Abel-Regular.ttf')  format('truetype'), /* Safari, Android, iOS */
 }
 
 @font-face {
   font-family: 'Exo';
-  url('../fonts/Exo_2/Exo2-Italic.ttf')  format('truetype'), /* Safari, Android, iOS */
+url('../fonts/Exo_2/Exo2-Italic.ttf')  format('truetype'), /* Safari, Android, iOS */
 }
 
 .popup-body,
@@ -328,6 +340,18 @@ button {
   display: none;
 }
 
+.popup-alert-icon-container {
+    background-color: white;
+    transform: translateY(1px);
+    border-radius: 50%;
+}
+
+  .popup-alert-icon {
+    height: 10px;
+    width: auto;
+    transform: translate(3px, -1px);
+  }
+
 /* Buttons */
 
 .popup-alert-chart-btn {
@@ -346,118 +370,118 @@ button {
   color: #fff;
 }
 
-  .buy-btn span {
-    height: 27px;
-    font-family: Abel, sans-serif;
-    text-transform: uppercase;
-    color: white;
-    text-decoration: none;
-    text-align: center;
-    display: block;
-  }
+.buy-btn span {
+  height: 27px;
+  font-family: Abel, sans-serif;
+  text-transform: uppercase;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  display: block;
+}
 
-    .buy-btn-slide-frame, .buy-btn-label,
-    .buy-btn-slide-frame, .buy-btn-lines {
-      transition: 0.3s;
-      transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66)
-    }
+.buy-btn-slide-frame, .buy-btn-label,
+.buy-btn-slide-frame, .buy-btn-lines {
+  transition: 0.3s;
+  transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66)
+}
 
-    .buy-btn-slide-frame, .buy-btn-exchange {
-      transition: 0.4s;
-    }
+.buy-btn-slide-frame, .buy-btn-exchange {
+  transition: 0.4s;
+}
 
-    .buy-btn-slide-frame {
-      width: 400px;
-    }
+.buy-btn-slide-frame {
+  width: 400px;
+}
 
-      .buy-btn-label {
-        height: 27px;
-        width: 100%;
-        z-index: 200;
-        position: absolute;
-        line-height: 2;
-        font-size: 13px;
-        margin-top: 1px;
-      }
+.buy-btn-label {
+  height: 27px;
+  width: 100%;
+  z-index: 200;
+  position: absolute;
+  line-height: 2;
+  font-size: 13px;
+  margin-top: 1px;
+}
 
-      .buy-btn-label-coin {
-      }
+.buy-btn-label-coin {
+}
 
-      .buy-btn-lines {
-        background: none;
-        width: 200px;
-        float: left;
-        position: relative;
-        margin-left: 260px;
-      }
+.buy-btn-lines {
+  background: none;
+  width: 200px;
+  float: left;
+  position: relative;
+  margin-left: 260px;
+}
 
-        .buy-btn-lines:before {
-          position: relative;
-          top: -14px; left: -55px;
-          content: "\25b6";
-          color: #f2b93f;
-          font-size: 10px;
-          text-shadow: 1px 1px 3px black;
-        }
+.buy-btn-lines:before {
+  position: relative;
+  top: -14px; left: -55px;
+  content: "\25b6";
+  color: #f2b93f;
+  font-size: 10px;
+  text-shadow: 1px 1px 3px black;
+}
 
-      .buy-btn-line {
-        position: absolute;
-        height: 64px;
-        width: 100px;
-        border-bottom: 3px solid #f7c760;
-        -webkit-transform:
-          translateY(0px)
-          translateX(5px)
-          rotate(-75deg);
-        top: -25px; left: -54px;
-      }
+.buy-btn-line {
+  position: absolute;
+  height: 64px;
+  width: 100px;
+  border-bottom: 3px solid #f7c760;
+  -webkit-transform:
+    translateY(0px)
+    translateX(5px)
+    rotate(-75deg);
+  top: -25px; left: -54px;
+}
 
-      .buy-btn-exchange {
-        position: absolute;
-        top: 50px; left: 32px;
-        font-size: 8px;
-        text-transform: uppercase;
-        color: #f2b93f;
-        text-shadow: 1px 1px 1px black;
-        letter-spacing: 1px;
-        line-height: 2;
-      }
+.buy-btn-exchange {
+  position: absolute;
+  top: 50px; left: 32px;
+  font-size: 8px;
+  text-transform: uppercase;
+  color: #f2b93f;
+  text-shadow: 1px 1px 1px black;
+  letter-spacing: 1px;
+  line-height: 2;
+}
 
-      .buy-btn-line-two {
-        left: -60px
-      }
+.buy-btn-line-two {
+  left: -60px
+}
 
-        .buy-btn:hover {
-          -moz-box-shadow:    inset 0 0 5px #000000;
-          -webkit-box-shadow: inset 0 0 5px #000000;
-          box-shadow:         inset 0 0 5px #000000;
-          background-image: -webkit-gradient(linear, left top, left bottom, from(#636363), to(#3F3F3F));
-          border: 1px solid #f7c760;
-        }
+.buy-btn:hover {
+  -moz-box-shadow:    inset 0 0 5px #000000;
+  -webkit-box-shadow: inset 0 0 5px #000000;
+  box-shadow:         inset 0 0 5px #000000;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#636363), to(#3F3F3F));
+  border: 1px solid #f7c760;
+}
 
-        .buy-btn:hover .buy-btn-label {
-          margin-left: -45px;
-          text-shadow: 1px 1px 1px black;
-        }
+.buy-btn:hover .buy-btn-label {
+  margin-left: -45px;
+  text-shadow: 1px 1px 1px black;
+}
 
-        .buy-btn:hover .buy-btn-lines {
-          margin-left: 68px;
-        }
+.buy-btn:hover .buy-btn-lines {
+  margin-left: 68px;
+}
 
-        .buy-btn:hover .buy-btn-exchange {
-          top: 7px;
-          left: 32px;
-        }
+.buy-btn:hover .buy-btn-exchange {
+  top: 7px;
+  left: 32px;
+}
 
-        .buy-btn:hover .buy-btn-label-coin {
-          display: none;
-        }
+.buy-btn:hover .buy-btn-label-coin {
+  display: none;
+}
 
-        .buy-btn:active {
-          -moz-box-shadow:    inset 0 0 10px #000000;
-          -webkit-box-shadow: inset 0 0 10px #000000;
-          box-shadow:         inset 0 0 10px #000000;
-        }
+.buy-btn:active {
+  -moz-box-shadow:    inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow:         inset 0 0 10px #000000;
+}
 
 /* Animation */
 

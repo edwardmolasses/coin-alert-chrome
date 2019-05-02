@@ -17,12 +17,7 @@
   },
   "permissions": [
     "storage",
-    "https://chrome-coin-alert.glitch.me/*",
-    "https://chrome-coin-alert-1.glitch.me/*",
-    "https://chrome-coin-alert-2.glitch.me/*",
-    "https://chrome-coin-alert-3.glitch.me/*",
-    "https://chrome-coin-alert-4.glitch.me/*",
-    "https://chrome-coin-alert-5.glitch.me/*"
+    "https://chrome-coin-alert-4.glitch.me/*"
   ],
   "options_ui": {
     "page": "options.html",

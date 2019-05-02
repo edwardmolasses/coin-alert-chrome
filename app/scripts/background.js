@@ -9,7 +9,7 @@ const gainsBadgeColour = '#30ad63';
 const defaultBadgeColour = '#000';
 const lossBadgeColour = '#be3a31';
 const defaultBadgeDecimalPlaces = 2;
-const intervalPriceCheckInMinutes = 1;
+const intervalPriceCheckInMinutes = 4;
 const intervalGainCheckInMinutes = 720;
 const coinGeckoPriceAPI = `https://api.coingecko.com/api/v3/simple/price?ids=${coinAlertCoin}&vs_currencies=usd`;
 
@@ -79,25 +79,25 @@ const parseCoinGeckoPriceObject = function(jsonObj) {
 };
 const prettifyPrice = function(uglyPrice) {
   if (uglyPrice >= 1000000000) {
-    return Math.sign(uglyPrice) * ((Math.abs(uglyPrice) / 1000000000).toFixed(2));
+    return (Math.sign(uglyPrice) * (Math.abs(uglyPrice) / 1000000000)).toFixed(2);
   }
   if (uglyPrice >= 100000000) {
-    return parseInt(Math.sign(uglyPrice) * (Math.abs(uglyPrice) / 1000000).toFixed(1));
+    return (Math.sign(uglyPrice) * (Math.abs(uglyPrice) / 1000000)).toFixed(1);
   }
   if (uglyPrice >= 1000000) {
-    return Math.sign(uglyPrice) * ((Math.abs(uglyPrice) / 1000000).toFixed(2));
+    return (Math.sign(uglyPrice) * (Math.abs(uglyPrice) / 1000000)).toFixed(2);
   }
   if (uglyPrice >= 100000) {
-    return parseInt(Math.sign(uglyPrice) * (Math.abs(uglyPrice) / 1000).toFixed(1));
+    return (Math.sign(uglyPrice) * (Math.abs(uglyPrice) / 1000).toFixed(1)).toFixed(1);
   }
   if (uglyPrice >= 1000) {
-    return Math.sign(uglyPrice) * ((Math.abs(uglyPrice) / 1000).toFixed(2));
-  }
-  if (uglyPrice < 1) {
-    return Math.abs(uglyPrice.toFixed(2));
+    return (Math.sign(uglyPrice) * ((Math.abs(uglyPrice) / 1000))).toFixed(2);
   }
   if (uglyPrice < 0.001 && uglyPrice > 0.00009) {
     return '000' + parseInt(uglyPrice * 10000);
+  }
+  if (uglyPrice < 1) {
+    return uglyPrice.toFixed(2);
   }
 
   return Math.sign(uglyPrice) * Math.abs(uglyPrice);
