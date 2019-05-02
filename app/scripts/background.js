@@ -97,7 +97,7 @@ const prettifyPrice = function(uglyPrice) {
     return Math.abs(uglyPrice.toFixed(2));
   }
   if (uglyPrice < 0.001 && uglyPrice > 0.00009) {
-
+    return '000' + parseInt(uglyPrice * 10000);
   }
 
   return Math.sign(uglyPrice) * Math.abs(uglyPrice);
