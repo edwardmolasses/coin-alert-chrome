@@ -19,13 +19,16 @@ let alertPriceMessageDirectionBelowText = document.getElementById('popup-alert-p
 let buyBtnCoinText = document.getElementById('buy-btn-label-coin');
 
 // variables
-const coinGeckoPriceAPI = 'https://api.coingecko.com/api/v3/coins/iota/tickers?exchange_ids=binance&page=1';
+const appNameStr = "CoinAlert";
+const coinAlertCoin = "iota";
+const coinAlertBaseCurrency = "usd";
+const coinGeckoPriceAPI = `https://api.coingecko.com/api/v3/simple/price?ids=${coinAlertCoin}&vs_currencies=usd`;
 const buyIotaDefaultUrl = 'https://www.binance.com/?ref=17037537';
 const buyIotaEuroUrl = 'https://www.binance.je/?ref=35052042';
 const buyIotaEuroBtnText = 'CRYPTO';
 const currentPriceDecimalPlaces = 5;
 const badgePriceDecimalPlaces = 2;
-const intervalCheckInSeconds = 4;
+const intervalCheckInSeconds = 1;
 let buyIotaUrl = buyIotaDefaultUrl;
 let currentPriceFull = false;
 let alertPriceFull = false;
@@ -52,18 +55,21 @@ const setAlertFormPriceInput = function(price) {
   alertFormPriceInput.value = price;
 };
 const resetAlert = function() {
-    hideElement(alertPriceMessage);
-    hideElement(alertOffBtn);
-    showElement(alertNoAlertSet);
-    showElement(alertStatusMessageText);
-    chrome.runtime.sendMessage({ alertOff: true });
+  hideElement(alertPriceMessage);
+  hideElement(alertOffBtn);
+  showElement(alertNoAlertSet);
+  showElement(alertStatusMessageText);
+  chrome.runtime.sendMessage({ alertOff: true });
+};
+const prefixObjectStr = function(str) {
+  return `${coinAlertCoin}${appNameStr}${str}`;
 };
 const setAlert = function(alertPrice, directionToPrice) {
-  chrome.storage.sync.set({
-    coinAlertAlertPrice: alertPrice,
-    directionToPrice: directionToPrice,
-    alertTriggered: false
-  });
+  let storageSettings = {};
+  storageSettings[prefixObjectStr('Price')] = alertPrice;
+  storageSettings[prefixObjectStr('DirectionToPrice')] = directionToPrice;
+  storageSettings[prefixObjectStr('Triggered')] = false;
+  chrome.storage.sync.set(storageSettings);
   // send new alert price to background script & switch alert off
   chrome.runtime.sendMessage({
     alertPrice: alertPrice,
@@ -89,8 +95,10 @@ const setCurrentCoinPrice = function(currentPrice) {
   }
 
   // fill input with current price if there is no alert price set
-  chrome.storage.sync.get(['coinAlertAlertPrice'], function(data) {
-    if (!!!data.coinAlertAlertPrice && !!!alertFormPriceInput.value) {
+  chrome.storage.sync.get([prefixObjectStr('Price')], function(data) {
+    const alertPrice = data[prefixObjectStr('Price')];
+
+    if (!!!alertPrice && !!!alertFormPriceInput.value) {
       setAlertFormPriceInput(currentPrice);
     }
   });
@@ -116,19 +124,21 @@ const isIpAddress = function (str) {
   const digitFourth = parseInt(splitStrArr[3]);
 
   if (!isNaN(digitFirst) &&
-      !isNaN(digitSecond) &&
-      !isNaN(digitThird) &&
-      !isNaN(digitFourth)) {
-    console.log('is a number');
+    !isNaN(digitSecond) &&
+    !isNaN(digitThird) &&
+    !isNaN(digitFourth)) {
     if ((digitFirst >= 0 && digitFirst <= 256) &&
-        (digitSecond >= 0 && digitSecond <= 256) &&
-        (digitThird >= 0 && digitThird <= 256) &&
-        (digitFourth >= 0 && digitFourth <= 256)) {
+      (digitSecond >= 0 && digitSecond <= 256) &&
+      (digitThird >= 0 && digitThird <= 256) &&
+      (digitFourth >= 0 && digitFourth <= 256)) {
       return true;
     }
   }
 
   return false;
+};
+const parseCoinGeckoPriceObject = function(jsonObj) {
+  return parseFloat(jsonObj[coinAlertCoin][coinAlertBaseCurrency]);
 };
 
 // initialize elements
@@ -140,11 +150,11 @@ alertFormPriceInput.select();
 
 // set buy coin referral url with user country
 fetch('http://jsonip.com', {
-    headers : {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    }
-  })
+  headers : {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
+})
   .then(response => response.clone().json())
   .then(jsonIp => {
     if (isIpAddress(jsonIp.ip)) {
@@ -161,28 +171,36 @@ fetch('http://jsonip.com', {
   });
 
 // initialize popup with current alert settings
-chrome.storage.sync.get(['coinAlertCurrentPrice', 'coinAlertAlertPrice', 'directionToPrice', 'alertTriggered'], function(data) {
-  setAlertPrice(data.coinAlertAlertPrice);
-  if (data.directionToPrice === 'up') setAbovePriceDirectionText();
-  if (data.directionToPrice === 'down') setBelowPriceDirectionText();
-  if (data.alertTriggered) {
+chrome.storage.sync.get([prefixObjectStr('CurrentPrice'), prefixObjectStr('Price'), prefixObjectStr('DirectionToPrice'), prefixObjectStr('Triggered')], function(data) {
+  const alertPrice = data[prefixObjectStr('Price')];
+  const directionToPrice = data[prefixObjectStr('DirectionToPrice')];
+  const alertTriggered = data[prefixObjectStr('Triggered')];
+
+  setAlertPrice(alertPrice);
+  if (directionToPrice === 'up') setAbovePriceDirectionText();
+  if (directionToPrice === 'down') setBelowPriceDirectionText();
+  if (alertTriggered) {
     showElement(alertOffBtn);
   }
-  if (!!data.coinAlertAlertPrice) {
-    setAlertFormPriceInput(data.coinAlertAlertPrice);
+  if (!!alertPrice) {
+    setAlertFormPriceInput(alertPrice);
   } else {
     resetAlert();
   }
 
   // initialize popup with current coin price
   fetch(coinGeckoPriceAPI, {
-      headers : {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    })
+    headers : {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  })
     .then(response => response.json())
-    .then(json => setCurrentCoinPrice(parseFloat(json.tickers[1].converted_last.usd)));
+    .then(json => {
+      setCurrentCoinPrice(parseCoinGeckoPriceObject(json));
+      // send current price to background script so badge can be updated on click
+      chrome.runtime.sendMessage({ currentPrice: parseCoinGeckoPriceObject(json) });
+    });
 });
 
 // click current price event
@@ -203,7 +221,7 @@ alertSaveMessagePrice.addEventListener('click', function() {
 
 // link from chart button
 alertChartBtn.addEventListener('click', function() {
-  chrome.tabs.create({ url: 'https://coinmarketcap.com/currencies/iota/' });
+  chrome.tabs.create({ url: `https://coinmarketcap.com/currencies/${coinAlertCoin}/` });
 });
 
 // link from exchange buy button
@@ -213,11 +231,11 @@ alertBuyBtn.addEventListener('click', function() {
 
 // stop alert, button click event
 alertOffBtn.addEventListener('click', function() {
-  chrome.storage.sync.set({
-    coinAlertAlertPrice: false,
-    directionToPrice: false,
-    alertTriggered: false
-  });
+  let storageSettings = {};
+  storageSettings[prefixObjectStr('Price')] = false;
+  storageSettings[prefixObjectStr('DirectionToPrice')] = false;
+  storageSettings[prefixObjectStr('Triggered')] = false;
+  chrome.storage.sync.set(storageSettings);
   resetAlert();
 });
 
